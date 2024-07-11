@@ -49,5 +49,5 @@ jobs:
         with:
           app-name: 'quizv1'
           slot-name: 'Production'
-          package: 'quiz*.jar'
+          package: 'quiz-0.0.1-SNAPSHOT.jar'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_25AF7455EA7E4D0B8EFA90EA8BC9C63E }}
