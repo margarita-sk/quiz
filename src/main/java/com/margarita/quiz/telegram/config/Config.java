@@ -19,11 +19,13 @@ public class Config {
 
     @Bean
     public TelegramBot telegramBot(@Value("${telegram.token}") String telegramToken) {
+        log.info("creating telegramBot");
         return new TelegramBot(telegramToken);
     }
 
     @Bean
     public UpdatesHandler updatesHandler(TelegramBot telegramBot, ExceptionHandler exceptionHandler, BotUpdatesListener updatesListener) {
+        log.info("creating updatesHandler");
         final var updatesHandler = new UpdatesHandler(10);
         updatesHandler.start(telegramBot, updatesListener, exceptionHandler, new GetUpdates());
         return updatesHandler;
