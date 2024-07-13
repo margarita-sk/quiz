@@ -28,7 +28,10 @@ public class RandomQuestionUpdateProcessor implements UpdateProcessor {
     public void processUpdate(Update update) {
         Long chatId = update.message().chat().id();
         Optional<QuizQuestion> quizQuestion = quizExecutionService.findRandomQuestion();
-        if (quizQuestion.isEmpty()) return;
+        if (quizQuestion.isEmpty()) {
+            telegramBot.execute(new SendMessage(chatId, "no questions"));
+            return;
+        }
 
         TelegramMessageDto message = new TelegramMessageDto();
         message.setQuestion(quizQuestion.get().getQuestion());
