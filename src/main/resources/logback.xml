@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration scan="true" scanPeriod="2 seconds" debug="false">
+
+    <appender name="log.console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="com.sap.s4hana.eureka.framework.context.log.LoggerLayoutEncoder">
+            <pattern>%red(%d{yyyy-MM-dd HH:mm:ss.SSS}\t%-5level)\t%green(%tenantContext\t%userContext\t%requestContext)\tThread[%thread]\t%boldMagenta(Logger[%logger{36}])\t%cyan(Msg[%msg]%n)</pattern>
+        </encoder>
+    </appender>
+
+
+    <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="log.console" />
+    </appender>
+
+    <root>
+        <level value="INFO" />
+        <appender-ref ref="log.console" />
+    </root>
+
+</configuration>
