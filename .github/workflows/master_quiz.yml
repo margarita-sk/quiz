@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy JAR app to Azure Web App - quiz
+name: Build and deploy WAR app to Azure Web App - quiz
 
 on:
   push:
@@ -17,19 +17,18 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Set up Java version
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v1
         with:
           java-version: '17'
-          distribution: 'microsoft'
 
-      - name: Build with Gradle Wrapper
-        run: ./gradlew build
+      - name: Build with Maven
+        run: mvn clean install
 
       - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: java-app
-          path: '${{ github.workspace }}/build/libs/quiz-0.0.1-SNAPSHOT.jar'
+          path: '${{ github.workspace }}/target/*.war'
 
   deploy:
     runs-on: ubuntu-latest
@@ -37,27 +36,18 @@ jobs:
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    permissions:
-      id-token: write #This is required for requesting the JWT
-
+    
     steps:
       - name: Download artifact from build job
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v3
         with:
           name: java-app
       
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_40BC4145AC314D9AA7EFC38B54C15E7A }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_8799C1FB63C641E293B34AB3E7871DD9 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_E1CED8443DD942D2B1DEA2FF2760E0DA }}
-
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
-        uses: azure/webapps-deploy@v3
+        uses: azure/webapps-deploy@v2
         with:
           app-name: 'quiz'
           slot-name: 'Production'
-          package: 'quiz-0.0.1-SNAPSHOT.jar'
-          
+          package: '*.war'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_85554DF90EE5436C857E5A44141167B8 }}
