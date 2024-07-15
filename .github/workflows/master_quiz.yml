@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy JAR app to Azure Web App - hello
+name: Build and deploy JAR app to Azure Web App - quiz
 
 on:
   push:
@@ -50,4 +50,4 @@ jobs:
           app-name: 'quiz'
           slot-name: 'Production'
           package: 'quiz.jar'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_85554DF90EE5436C857E5A44141167B8 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_7944F54949B84F02A3CB19F2F35ED8C1 }}
