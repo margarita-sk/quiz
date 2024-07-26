@@ -4,8 +4,12 @@ import com.margarita.quiz.model.QuizQuestion;
 import com.margarita.quiz.repository.QuizQuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -40,6 +44,16 @@ public class QuizService {
 
     public void updateFailedQuestion(Long questionId) {
         repository.updateFailedQuestion(questionId);
+    }
+
+    public void storeQuestionsFromFile(MultipartFile file) {
+        try {
+            String fileContent = new String(file.getBytes(), StandardCharsets.UTF_8);
+            List<QuizQuestion> quizQuestions = MdFileParser.parseQuestions(fileContent);
+            repository.saveAll(quizQuestions);
+        } catch (IOException e) {
+            throw new RuntimeException();
+        }
     }
 
 }
